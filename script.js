@@ -108,7 +108,11 @@ function onWindowResize() {
     
         tl
           .to(scene.rotation, { y: 1.2 ,duration:1.5},">1")
-          .to(sphereMesh.scale,{x:4,y:4,z:4,duration:1.5},"1");
+          .to(sphereMesh.scale,{x:4.75,y:4.75,z:4.75,duration:1.5},"1")
+          .to(cube.position,{x:cube.position.x-0.05},"3")
+          .to(sphereMesh.position,{x:sphereMesh.position.x+0.05},"3")
+          .to(cube.position,{x:cube.position.x+0.05},"3.5")
+          .to(sphereMesh.position,{x:sphereMesh.position.x-0.05},"3.5");
           /*.to(camera.rotation,{x:0.05})
           .to(camera.rotation,{x:0.1})
           .to(camera.rotation,{x:0.15})
