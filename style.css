@@ -28,22 +28,6 @@ position: relative;
 
 }
 
-.section-one {
-background-color: tomato;
-}
-
-.section-two {
-background-color: steelblue;
-}
-
-.section-three {
-background-color: crimson;
-}
-
-.section-four {
-background-color: lime;
-}
-
-.section-five {
-background-color: grey;
+section p{
+    color:white;
 }

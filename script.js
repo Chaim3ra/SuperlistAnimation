@@ -88,10 +88,6 @@ function onWindowResize() {
     });
     
     
-    let rotSpeed=0.5;
-    
-    
-    
     let tl = gsap.timeline({
     
             scrollTrigger: {
@@ -110,5 +106,15 @@ function onWindowResize() {
           .to(cube.position,{x:cube.position.x-0.05},"3")
           .to(sphereMesh.position,{x:sphereMesh.position.x+0.05},"3")
           .to(cube.position,{x:cube.position.x+0.05},"3.5")
-          .to(sphereMesh.position,{x:sphereMesh.position.x-0.05},"3.5");
+          .to(sphereMesh.position,{x:sphereMesh.position.x-0.05},"3.5")
+          .to(scene.rotation,{y:-3,duration:4},"4")
+          .to(cube.position,{x:0,duration:3},"4.6")
+          .to(sphereMesh.position,{x:0,duration:3},"4.6")
+          .to(cube.scale,{x:0,y:0,z:0,duration:3},"4.5")
+          .to(sphereMesh.scale,{x:0,y:0,z:0,duration:3},"4.5");
+
+
+
+
+
           
