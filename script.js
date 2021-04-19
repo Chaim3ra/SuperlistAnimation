@@ -27,7 +27,7 @@ cube.position.set(0.5,0,0);
 scene.add( cube );
 
 /* Initial Sphere setup and creation */
-var sphereGeometry = new THREE.SphereGeometry(.1, 20, 20);
+var sphereGeometry = new THREE.SphereGeometry(.1, 30, 30);
 var matProps = {
 
     specular: '#a9fcff',
@@ -44,20 +44,21 @@ scene.add(sphere);
 
 /* Light properties */
 const color = 0xFFFFFF;
-const intensity = 0.65;
-const light = new THREE.DirectionalLight(color, intensity);
-light.position.set(0, 1.5, 3);
-light.target.position.set(0, 0, 0);
+const intensity = 1;
+const light = new THREE.PointLight(color, intensity);
+light.position.set(-8, 3, -10);
+//light.target.position.set(0, 0, 0);
 scene.add(light);
-scene.add(light.target);
+//scene.add(light.target);
 
 // ambient
-scene.add( new THREE.AmbientLight( 0xffffff, 0.2 ) ); // optional
+// scene.add( new THREE.AmbientLight( 0xffffff, 0.2 ) ); // optional
 
 
 
-const helper = new THREE.DirectionalLightHelper(light);
-scene.add(helper);
+//scene.add(helper);
+
+//scene.add( new THREE.AxesHelper() );
 
 pivot = new THREE.Group();
 pivot.position.set( 0.0, 0.0, 0 );
