@@ -188,22 +188,22 @@ tl.to(pivot.rotation, { y:3 ,duration:1.5},">1")
 .to(tokenPivot[5].rotation,{x:-2.6,duration:8},"8.75")
 .to(tokenPivot[6].rotation,{x:-1.8,duration:8},"8.75")
 .to(tokenPivot[7].rotation,{x:-1,duration:8},"8.75")
-.to(tokenPivot[0].rotation,{x:-6.6-3,duration:8},"15")
-.to(tokenPivot[1].rotation,{x:-5.8-3,duration:8},"15")
-.to(tokenPivot[2].rotation,{x:-5-3,duration:8},"15")
-.to(tokenPivot[3].rotation,{x:-4.2-3,duration:8},"15")
-.to(tokenPivot[4].rotation,{x:-3.4-3,duration:8},"15")
-.to(tokenPivot[5].rotation,{x:-2.6-3,duration:8},"15")
-.to(tokenPivot[6].rotation,{x:-1.8-3,duration:8},"15")
-.to(tokenPivot[7].rotation,{x:-1-3,duration:8},"15")
+.to(tokenPivot[0].rotation,{x:-6.6-3,duration:8},"16.75")
+.to(tokenPivot[1].rotation,{x:-5.8-3,duration:8},"16.75")
+.to(tokenPivot[2].rotation,{x:-5-3,duration:8},"16.75")
+.to(tokenPivot[3].rotation,{x:-4.2-3,duration:8},"16.75")
+.to(tokenPivot[4].rotation,{x:-3.4-3,duration:8},"16.75")
+.to(tokenPivot[5].rotation,{x:-2.6-3,duration:8},"16.75")
+.to(tokenPivot[6].rotation,{x:-1.8-3,duration:8},"16.75")
+.to(tokenPivot[7].rotation,{x:-1-3,duration:8},"16.75")
 .to([tokenArray[0].position,tokenArray[1].position,tokenArray[2].position,
     tokenArray[3].position,tokenArray[4].position,
     tokenArray[5].position,tokenArray[6].position,
-    tokenArray[7].position],{x:0,y:0,z:0,duration:1.4},"19")
+    tokenArray[7].position],{x:0,y:0,z:0,duration:1.4},"21")
 .to([tokenArray[0].scale,tokenArray[1].scale,tokenArray[2].scale,
     tokenArray[3].scale,tokenArray[4].scale,
     tokenArray[5].scale,tokenArray[6].scale,
-    tokenArray[7].scale],{x:0,y:0,z:0,duration:2},"19")
+    tokenArray[7].scale],{x:0,y:0,z:0,duration:2},"21")
 
 //.to(tokenArray[0].position,{z:0,duration:1.4},"10.3");
 
