@@ -1,5 +1,17 @@
+const loader = new THREE.GLTFLoader();
+let desktop;
+loader.load( 'https://raw.githubusercontent.com/Chaim3ra/SuperlistAnimation/main/models/desktop.gltf?token=AEM4KDPOD2WWNWTJAH55F53AQ6NT2', function ( gltf ) {
+    desktop=gltf.scene
+    desktop.scale.set(0.003,0.003,0.003);
+    desktop.rotation.set(-4.85,0,0);
+    desktop.position.set(0,0,0);
+    //scene.add( desktop );
 
+}, undefined, function ( error ) {
 
+    console.error( error );
+
+} );
 
 
 let renderer;
@@ -46,11 +58,14 @@ sphere.name = 'sphere';
 sphere.position.set(-0.5,0,0);
 scene.add(sphere);
 
-/* Initial Cylinder setup and creation 
-const geometry = new THREE.CylinderGeometry( .225, .225, .1, 32 );
+/* Initial Cylinder setup and creation */
+const geometry = new THREE.CylinderGeometry( .225, .225, .05, 32 );
 const material = new THREE.MeshPhongMaterial( {color: 0xffff00} );
 const cylinder = new THREE.Mesh( geometry, material );
-scene.add( cylinder );*/
+cylinder.position.set(0,0,0);
+cylinder.rotation.set(0,0,0);
+cylinder.scale.set(0,0,0);
+scene.add( cylinder );
 
 /* Light properties */
 const color = 0xFFFFFF;
@@ -127,9 +142,12 @@ tl.to(pivot.rotation, { y:3 ,duration:1.5},">1")
 .to(cube.position,{x:cube.position.x+0.05},"3.5")
 .to(sphere.position,{x:sphere.position.x-0.05},"3.5")
 .to(pivot.rotation,{y:0,z:pivot.rotation.z+0.001,duration:1.5},"4")
-.to(pivot.rotation,{y:-3.5,duration:3},"7")
-.to([cube.position,sphere.position],{x:0,duration:1.5},"7")
-.to([cube.scale,sphere.scale],{x:0,y:0,z:0,duration:1.35},"7.1");
+.to(pivot.rotation,{y:-3.5,duration:2},"7.5")
+.to([cube.position,sphere.position],{x:0,duration:1.5},"7.5")
+.to([cube.scale,sphere.scale],{x:0,y:0,z:0,duration:1.35},"7.6")
+.to(cylinder.scale,{x:1.2,y:1.2,z:1.2,duration:1.35},"8.65")
+.to(cylinder.rotation,{x:2,duration:1.35},"8.65");
+
           
 
 
