@@ -1,6 +1,6 @@
 const loader = new THREE.GLTFLoader();
 let desktop;
-loader.load( 'https://raw.githubusercontent.com/Chaim3ra/SuperlistAnimation/main/models/desktop.gltf?token=AEM4KDPOD2WWNWTJAH55F53AQ6NT2', function ( gltf ) {
+loader.load( 'https://raw.githubusercontent.com/Chaim3ra/SuperlistAnimation/main/models/soma_cube.gltf?token=AEM4KDPOD2WWNWTJAH55F53AQ6NT2', function ( gltf ) {
     desktop=gltf.scene
     desktop.scale.set(0.003,0.003,0.003);
     desktop.rotation.set(-4.85,0,0);
