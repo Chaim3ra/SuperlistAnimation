@@ -91,6 +91,11 @@ scene.add( pivot );
 pivot.add( cube );
 pivot.add( sphere );
 
+tokenPivot=new THREE.Group();
+tokenPivot.position.set( 0.0, 0.0, 0 );
+scene.add( tokenPivot );
+tokenPivot.add( cylinder );
+
 
 function render() {
 renderer.render(scene, camera);
@@ -145,8 +150,11 @@ tl.to(pivot.rotation, { y:3 ,duration:1.5},">1")
 .to(pivot.rotation,{y:-3.5,duration:2},"7.5")
 .to([cube.position,sphere.position],{x:0,duration:1.5},"7.5")
 .to([cube.scale,sphere.scale],{x:0,y:0,z:0,duration:1.35},"7.6")
-.to(cylinder.scale,{x:1.2,y:1.2,z:1.2,duration:1.35},"8.65")
-.to(cylinder.rotation,{x:2,duration:1.35},"8.65");
+.to(cylinder.scale,{x:1,y:1,z:1,duration:1.25},"8.75")
+.to(cylinder.rotation,{x:5,z:5.5,duration:1.25},"8.75")
+.to(cylinder.position,{z:-1.3,y:-1.3,duration:1.25},"8.75")
+.to(cylinder.position,{z:0,duration:1.25},"10")
+.to(tokenPivot.rotation,{x:-6.2,duration:8},"8.75");
 
           
 
