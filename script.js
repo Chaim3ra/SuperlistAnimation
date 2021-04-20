@@ -1,3 +1,7 @@
+
+
+
+
 let renderer;
 let camera;
 //let controls;
@@ -42,11 +46,17 @@ sphere.name = 'sphere';
 sphere.position.set(-0.5,0,0);
 scene.add(sphere);
 
+/* Initial Cylinder setup and creation 
+const geometry = new THREE.CylinderGeometry( .225, .225, .1, 32 );
+const material = new THREE.MeshPhongMaterial( {color: 0xffff00} );
+const cylinder = new THREE.Mesh( geometry, material );
+scene.add( cylinder );*/
+
 /* Light properties */
 const color = 0xFFFFFF;
 const intensity = 1;
 const light = new THREE.PointLight(color, intensity);
-light.position.set(-8, 3, -10);
+light.position.set(0, 3, -10);
 //light.target.position.set(0, 0, 0);
 scene.add(light);
 //scene.add(light.target);
@@ -114,10 +124,12 @@ tl.to(pivot.rotation, { y:3 ,duration:1.5},">1")
 .to(sphere.scale,{x:4.75,y:4.75,z:4.75,duration:1.5},"1")
 .to(cube.position,{x:cube.position.x-0.05},"3")
 .to(sphere.position,{x:sphere.position.x+0.05},"3")
-.to([cube.position,sphere],{x:cube.position.x+0.05},"3.5")
-.to(pivot.rotation,{y:-3.5,duration:3},"4")
-.to([cube.position,sphere.position],{x:0,duration:1.25},"4.6")
-.to([cube.scale,sphere.scale],{x:0,y:0,z:0,duration:1.25},"4.5");
+.to(cube.position,{x:cube.position.x+0.05},"3.5")
+.to(sphere.position,{x:sphere.position.x-0.05},"3.5")
+.to(pivot.rotation,{y:0,z:pivot.rotation.z+0.001,duration:1.5},"4")
+.to(pivot.rotation,{y:-3.5,duration:3},"7")
+.to([cube.position,sphere.position],{x:0,duration:1.5},"7")
+.to([cube.scale,sphere.scale],{x:0,y:0,z:0,duration:1.35},"7.1");
           
 
 
