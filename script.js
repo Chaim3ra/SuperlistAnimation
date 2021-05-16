@@ -113,13 +113,16 @@ scene.add( tokenPivot[0] );
 var tokenArray = [];
  for(let i = 0; i < 8; i++){ 
         tokenArray[i]=tokensList[i];
+        tokenArray[i].rotation.set(-5,0,4.6)
         tokenArray[i].position.set(0,0,0);
         tokenArray[i].scale.set(0,0,0);
         scene.add(tokenArray[i]); 
         tokenPivot[i]=new THREE.Group();
         tokenPivot[i].position.set( 0.0, 0.0, 0.0 );
+        tokenPivot[i].rotation.set( 0.0, 0.0, 0.0 );
         scene.add( tokenPivot[i] );
         tokenPivot[i].add(tokenArray[i]);
+        //rotationPivot[i].add(tokenArray[i]);
 }  
 
 /* Light properties */
@@ -198,16 +201,12 @@ tl.to(pivot.rotation, { y:3 ,duration:1.5},">1")
 .to([tokenArray[0].scale,tokenArray[1].scale,tokenArray[2].scale,
     tokenArray[3].scale,tokenArray[4].scale,
     tokenArray[5].scale,tokenArray[6].scale,
-    tokenArray[7].scale],{x:1,y:1,z:1,duration:1.4},"8.75")
+    tokenArray[7].scale],{x:0.62,y:0.62,z:0.62,duration:1.4},"8.75")
 //.to(tokenArray[0].rotation,{x:5,z:5.5,duration:1.4},"8.75")
-.to(tokenArray[0].position,{z:-0.75,y:-1.1,duration:1.4},"8.75")
-.to(tokenArray[1].position,{z:-0.75,y:-1.1,duration:1.4},"8.75")
-.to(tokenArray[2].position,{z:-0.75,y:-1.1,duration:1.4},"8.75")
-.to(tokenArray[3].position,{z:-0.75,y:-1.1,duration:1.4},"8.75")
-.to(tokenArray[4].position,{z:-0.75,y:-1.1,duration:1.4},"8.75")
-.to(tokenArray[5].position,{z:-0.75,y:-1.1,duration:1.4},"8.75")
-.to(tokenArray[6].position,{z:-0.75,y:-1.1,duration:1.4},"8.75")
-.to(tokenArray[7].position,{z:-0.75,y:-1.1,duration:1.4},"8.75")
+.to([tokenArray[0].position,tokenArray[1].position,tokenArray[2].position,
+    tokenArray[3].position,tokenArray[4].position,
+    tokenArray[5].position,tokenArray[6].position,
+    tokenArray[7].position],{z:-0.75,y:-1.1,duration:1.4},"8.75")
 .to(tokenPivot[0].rotation,{x:-6.6,duration:8},"8.75")
 .to(tokenPivot[1].rotation,{x:-5.8,duration:8},"8.75")
 .to(tokenPivot[2].rotation,{x:-5,duration:8},"8.75")
@@ -224,6 +223,7 @@ tl.to(pivot.rotation, { y:3 ,duration:1.5},">1")
 .to(tokenPivot[5].rotation,{x:-2.6-3,duration:8},"16.75")
 .to(tokenPivot[6].rotation,{x:-1.8-3,duration:8},"16.75")
 .to(tokenPivot[7].rotation,{x:-1-3,duration:8},"16.75")
+.to(light.position,{x:10,z:5,duration:2},"9.5")
 .to([tokenArray[0].position,tokenArray[1].position,tokenArray[2].position,
     tokenArray[3].position,tokenArray[4].position,
     tokenArray[5].position,tokenArray[6].position,
