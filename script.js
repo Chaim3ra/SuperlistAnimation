@@ -1,11 +1,17 @@
 const loader = new THREE.GLTFLoader();
 let desktop;
-loader.load( 'https://raw.githubusercontent.com/Chaim3ra/SuperlistAnimation/main/models/soma_cube.gltf?token=AEM4KDPOD2WWNWTJAH55F53AQ6NT2', function ( gltf ) {
+loader.load( 'models/recolored.glb', function ( gltf ) {
     desktop=gltf.scene
-    desktop.scale.set(0.003,0.003,0.003);
-    desktop.rotation.set(-4.85,0,0);
+    desktop.scale.set(0.005,0.005,0.005);
+    desktop.rotation.set(0,0,0);
     desktop.position.set(0,0,0);
-    //scene.add( desktop );
+    scene.add( desktop );
+    mixer = new THREE.AnimationMixer( desktop );
+
+    console.log(gltf.animations);
+    var action = mixer.clipAction( gltf.animations[ 0 ] ); 
+    // access first animation clip
+    action.play();
 
 }, undefined, function ( error ) {
 
@@ -31,7 +37,7 @@ renderer = new THREE.WebGLRenderer({
 });
 
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor("grey");
+renderer.setClearColor("white");
 renderer.setPixelRatio(window.devicePixelRatio);
 document.body.appendChild(renderer.domElement);
 
@@ -76,7 +82,8 @@ pivot.add( sphere );
 
 
 tokenPivot=[];
-tokenPivot[0]=new THREE.Group();
+tokenRotate=[];
+tokenPivot[0],tokenRotate[0]=new THREE.Group();
 tokenPivot[0].position.set( 0.0, 0.0, 0 );
 scene.add( tokenPivot[0] );
 tokenPivot[0].add( cylinder );
@@ -152,7 +159,7 @@ let tl = gsap.timeline({
     start: "top top", 
     endTrigger: ".section-five",
     end: "bottom bottom", 
-    scrub: 2, 
+    scrub: 1, 
           }          
   });
     
@@ -172,14 +179,14 @@ tl.to(pivot.rotation, { y:3 ,duration:1.5},">1")
     tokenArray[5].scale,tokenArray[6].scale,
     tokenArray[7].scale],{x:1,y:1,z:1,duration:1.4},"8.75")
 //.to(tokenArray[0].rotation,{x:5,z:5.5,duration:1.4},"8.75")
-.to(tokenArray[0].position,{z:-0.75,y:-1.3,duration:1.4},"8.75")
-.to(tokenArray[1].position,{z:-0.75,y:-1.3,duration:1.4},"8.75")
-.to(tokenArray[2].position,{z:-0.75,y:-1.3,duration:1.4},"8.75")
-.to(tokenArray[3].position,{z:-0.75,y:-1.3,duration:1.4},"8.75")
-.to(tokenArray[4].position,{z:-0.75,y:-1.3,duration:1.4},"8.75")
-.to(tokenArray[5].position,{z:-0.75,y:-1.3,duration:1.4},"8.75")
-.to(tokenArray[6].position,{z:-0.75,y:-1.3,duration:1.4},"8.75")
-.to(tokenArray[7].position,{z:-0.75,y:-1.3,duration:1.4},"8.75")
+.to(tokenArray[0].position,{z:-0.75,y:-1.1,duration:1.4},"8.75")
+.to(tokenArray[1].position,{z:-0.75,y:-1.1,duration:1.4},"8.75")
+.to(tokenArray[2].position,{z:-0.75,y:-1.1,duration:1.4},"8.75")
+.to(tokenArray[3].position,{z:-0.75,y:-1.1,duration:1.4},"8.75")
+.to(tokenArray[4].position,{z:-0.75,y:-1.1,duration:1.4},"8.75")
+.to(tokenArray[5].position,{z:-0.75,y:-1.1,duration:1.4},"8.75")
+.to(tokenArray[6].position,{z:-0.75,y:-1.1,duration:1.4},"8.75")
+.to(tokenArray[7].position,{z:-0.75,y:-1.1,duration:1.4},"8.75")
 .to(tokenPivot[0].rotation,{x:-6.6,duration:8},"8.75")
 .to(tokenPivot[1].rotation,{x:-5.8,duration:8},"8.75")
 .to(tokenPivot[2].rotation,{x:-5,duration:8},"8.75")
@@ -199,11 +206,11 @@ tl.to(pivot.rotation, { y:3 ,duration:1.5},">1")
 .to([tokenArray[0].position,tokenArray[1].position,tokenArray[2].position,
     tokenArray[3].position,tokenArray[4].position,
     tokenArray[5].position,tokenArray[6].position,
-    tokenArray[7].position],{x:0,y:0,z:0,duration:1.4},"21")
+    tokenArray[7].position],{x:0,y:0,z:0,duration:1.4},"23")
 .to([tokenArray[0].scale,tokenArray[1].scale,tokenArray[2].scale,
     tokenArray[3].scale,tokenArray[4].scale,
     tokenArray[5].scale,tokenArray[6].scale,
-    tokenArray[7].scale],{x:0,y:0,z:0,duration:2},"21")
+    tokenArray[7].scale],{x:0,y:0,z:0,duration:2},"23")
 
 //.to(tokenArray[0].position,{z:0,duration:1.4},"10.3");
 
