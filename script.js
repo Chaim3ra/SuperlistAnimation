@@ -1,31 +1,10 @@
-const loader = new THREE.GLTFLoader();
-let desktop;
-loader.load( 'models/recolored.glb', function ( gltf ) {
-    desktop=gltf.scene
-    desktop.scale.set(0.005,0.005,0.005);
-    desktop.rotation.set(0,0,0);
-    desktop.position.set(0,0,0);
-    scene.add( desktop );
-    mixer = new THREE.AnimationMixer( desktop );
-
-    console.log(gltf.animations);
-    var action = mixer.clipAction( gltf.animations[ 0 ] ); 
-    // access first animation clip
-    action.play();
-
-}, undefined, function ( error ) {
-
-    console.error( error );
-
-} );
-
-
 let renderer;
 let camera;
 //let controls;
 
 /* Scene Creating*/
 let scene = new THREE.Scene();
+var clock = new THREE.Clock();
 camera = new THREE.PerspectiveCamera(45,window.innerWidth / window.innerHeight,0.1,1000),
 camera.position.set(0,2.5,3.75),
 scene.rotation.set(0, -1.9, 0)
@@ -40,6 +19,49 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setClearColor("white");
 renderer.setPixelRatio(window.devicePixelRatio);
 document.body.appendChild(renderer.domElement);
+
+const loader = new THREE.GLTFLoader();
+let soma_cube;
+loader.load( 'models/soma-cube.glb', function ( gltf ) {
+    soma_cube=gltf.scene
+    soma_cube.scale.set(0.3,0.3,0.3);
+    soma_cube.rotation.set(0,0,0);
+    soma_cube.position.set(0,0,0);
+    //scene.add(soma_cube);
+    mixer = new THREE.AnimationMixer( gltf.scene );
+    console.log(gltf.animations[0]);
+    var action = mixer.clipAction( gltf.animations[ 0 ] );
+    // access first animation clip
+    action.setDuration( 1 ).play();
+
+
+    var delta = clock.getDelta(); // clock is an instance of THREE.Clock
+    if ( mixer ) mixer.update( delta );
+
+
+}, undefined, function ( error ) {
+ 
+    console.error( error );
+ 
+} );
+ 
+var tokensList=[]
+
+for(let i=0;i<8;i++){
+    tokensList[i]=new THREE.Object3D();
+     //var token=new THREE.Object3D();
+    loader.load("models/token.glb", function(gltf){
+        tokensList[i].add(gltf.scene);
+
+    }, undefined, function ( error ) {
+     
+        console.error( error );
+     
+    } );
+}
+ 
+ console.log(tokensList);
+
 
 /* Initial Cube setup and creation */
 const cubeGeo = new THREE.BoxGeometry( 1, 1, 1 );
@@ -80,25 +102,24 @@ pivot.add( cube );
 pivot.add( sphere );
 
 
+var tokenPivot=[];
+var rotationPivot=[];
 
-tokenPivot=[];
-tokenRotate=[];
-tokenPivot[0],tokenRotate[0]=new THREE.Group();
-tokenPivot[0].position.set( 0.0, 0.0, 0 );
+tokenPivot[0]=new THREE.Group();
+//token.position.set( 0.0, 0.0, 0 );
 scene.add( tokenPivot[0] );
-tokenPivot[0].add( cylinder );
+//tokenPivot[0].add(token);
 
-tokenArray = [];
-tokenArray[0]=cylinder;
- for(var i = 1; i < 8; i++){ 
-        tokenArray[i] = cylinder.clone();
-            tokenArray[i].position.set(0,0,0);
-            tokenArray[i].scale.set(0,0,0);
-            scene.add(tokenArray[i]); 
-            tokenPivot[i]=new THREE.Group();
-            tokenPivot[i].position.set( 0.0, 0.0, 0 );
-            scene.add( tokenPivot[i] );
-            tokenPivot[i].add(tokenArray[i]);
+var tokenArray = [];
+ for(let i = 0; i < 8; i++){ 
+        tokenArray[i]=tokensList[i];
+        tokenArray[i].position.set(0,0,0);
+        tokenArray[i].scale.set(0,0,0);
+        scene.add(tokenArray[i]); 
+        tokenPivot[i]=new THREE.Group();
+        tokenPivot[i].position.set( 0.0, 0.0, 0.0 );
+        scene.add( tokenPivot[i] );
+        tokenPivot[i].add(tokenArray[i]);
 }  
 
 /* Light properties */
