@@ -1,5 +1,7 @@
 let renderer;
 let camera;
+let mixer;
+let action;
 //let controls;
 
 /* Scene Creating*/
@@ -21,22 +23,24 @@ renderer.setPixelRatio(window.devicePixelRatio);
 document.body.appendChild(renderer.domElement);
 
 const loader = new THREE.GLTFLoader();
-let soma_cube;
+var soma_cube;
+const cube=new THREE.Object3D();
 loader.load( 'models/soma-cube.glb', function ( gltf ) {
     soma_cube=gltf.scene
-    soma_cube.scale.set(0.3,0.3,0.3);
-    soma_cube.rotation.set(0,0,0);
-    soma_cube.position.set(0,0,0);
-    //scene.add(soma_cube);
-    mixer = new THREE.AnimationMixer( gltf.scene );
-    console.log(gltf.animations[0]);
-    var action = mixer.clipAction( gltf.animations[ 0 ] );
+    cube.add(soma_cube);
+    cube.scale.set(0.32,0.32,0.32);
+    cube.rotation.set(0,0,0);
+    cube.position.set(0.35,-0.34,0.2);
+    mixer = new THREE.AnimationMixer(cube);
+    action=mixer.clipAction(gltf.animations[0]);
+    action.setLoop( THREE.LoopOnce )
+    action.clampWhenFinished = true
+    
+    //scene.add(cube)
+    //var action = mixer.clipAction( gltf.animations[ 0 ] );
     // access first animation clip
-    action.setDuration( 1 ).play();
+    action.play();
 
-
-    var delta = clock.getDelta(); // clock is an instance of THREE.Clock
-    if ( mixer ) mixer.update( delta );
 
 
 }, undefined, function ( error ) {
@@ -44,6 +48,9 @@ loader.load( 'models/soma-cube.glb', function ( gltf ) {
     console.error( error );
  
 } );
+
+
+
  
 var tokensList=[]
 
@@ -66,9 +73,9 @@ for(let i=0;i<8;i++){
 /* Initial Cube setup and creation */
 const cubeGeo = new THREE.BoxGeometry( 1, 1, 1 );
 const cubeMat = new THREE.MeshPhongMaterial({color: '#8AC'});
-const cube = new THREE.Mesh( cubeGeo, cubeMat );
-cube.position.set(0.5,0,0);
-scene.add( cube );
+//const cube = new THREE.Mesh( cubeGeo, cubeMat );
+//cube.position.set(0.5,0,0);
+//scene.add( cube );
 
 /* Initial Sphere setup and creation */
 var sphereGeometry = new THREE.SphereGeometry(.1, 30, 30);
@@ -84,7 +91,8 @@ var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 sphere.castShadow = true;
 sphere.name = 'sphere';
 sphere.position.set(-0.5,0,0);
-scene.add(sphere);
+sphere.scale.set(0,0,0);
+//scene.add(sphere);
 
 /* Initial Cylinder setup and creation */
 const geometry = new THREE.CylinderGeometry( .225, .225, .05, 32 );
@@ -135,7 +143,7 @@ scene.add(light);
 //scene.add(light.target);
 
 // ambient
-// scene.add( new THREE.AmbientLight( 0xffffff, 0.2 ) ); // optional
+ scene.add( new THREE.AmbientLight( 0xffffff, 0.1 ) ); // optional
 
 
 
@@ -151,8 +159,10 @@ renderer.render(scene, camera);
 
 /* main */
 let animate = function() {
+    if ( mixer ) mixer.update(0.0166 );
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
+    
 };
 
 animate();
@@ -183,20 +193,21 @@ let tl = gsap.timeline({
     start: "top top", 
     endTrigger: ".section-five",
     end: "bottom bottom", 
-    scrub: 1, 
+    scrub: 2, 
           }          
   });
     
 
-tl.to(pivot.rotation, { y:3 ,duration:1.5},">1")
+tl
+.to(pivot.rotation, { y:3 ,duration:1.5},">1")
 .to(sphere.scale,{x:4.75,y:4.75,z:4.75,duration:1.5},"1")
-.to(cube.position,{x:cube.position.x-0.05},"3")
-.to(sphere.position,{x:sphere.position.x+0.05},"3")
-.to(cube.position,{x:cube.position.x+0.05},"3.5")
-.to(sphere.position,{x:sphere.position.x-0.05},"3.5")
+.to(cube.position,{x:cube.position.x+0.05},"3")
+.to(sphere.position,{x:sphere.position.x+0.06},"3")
+.to(cube.position,{x:cube.position.x+0.3},"3.5")
+.to(sphere.position,{x:sphere.position.x-0.06},"3.5")
 .to(pivot.rotation,{y:0,z:pivot.rotation.z+0.001,duration:1.5},"4")
 .to(pivot.rotation,{y:-3.5,duration:2},"7.5")
-.to([cube.position,sphere.position],{x:0,duration:1.5},"7.5")
+.to([cube.position,sphere.position],{x:0,y:0,z:0,duration:1.5},"7.5")
 .to([cube.scale,sphere.scale],{x:0,y:0,z:0,duration:1.35},"7.6")
 .to([tokenArray[0].scale,tokenArray[1].scale,tokenArray[2].scale,
     tokenArray[3].scale,tokenArray[4].scale,
