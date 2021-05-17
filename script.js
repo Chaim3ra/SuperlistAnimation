@@ -168,14 +168,8 @@ light.position.set(-1,1.2,1.2);
 //light.position.copy( camera.getWorldPosition() );
 light.castShadow = true;
 scene.add( light );
-const spotLightHelper = new THREE.SpotLightHelper( light );
-scene.add( spotLightHelper );
 //scene.add(helper);
 
-
-const axesHelper = new THREE.AxesHelper( 5 );
-scene.add( axesHelper );
-//scene.add( new THREE.AxesHelper() );
 
 
 
