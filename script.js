@@ -4,7 +4,7 @@ let mixer;
 let action;
 //let controls;
 
-/* Scene Creating*/
+/* Scene Creation */
 let scene = new THREE.Scene();
 var clock = new THREE.Clock();
 camera = new THREE.PerspectiveCamera(45,window.innerWidth / window.innerHeight,0.1,1000),
@@ -18,20 +18,19 @@ renderer = new THREE.WebGLRenderer({
 });
 
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor("white");
+renderer.setClearColor("grey");
 renderer.setPixelRatio(window.devicePixelRatio);
 document.body.appendChild(renderer.domElement);
 
 
-var cube_fragments=[];
-//cube_fragments[0]=new THREE.Object3D();
-
+let cube_fragments=[];
 const loader = new THREE.GLTFLoader();
-var soma_cube;
+let soma_cube;
 const cube=new THREE.Object3D();
-loader.load( 'models/soma-cube.glb', function ( gltf ) {
+loader.load( 'models/soma-cube.glb',function ( gltf ) {
     soma_cube=gltf.scene
-    cube.add(soma_cube);
+    cube.add(gltf.scene)
+    //scene.add(cube)
     cube.scale.set(0.32,0.32,0.32);
     cube.rotation.set(0,0,0);
     cube.position.set(0.35,-0.34,0.2);
@@ -39,16 +38,10 @@ loader.load( 'models/soma-cube.glb', function ( gltf ) {
     action=mixer.clipAction(gltf.animations[0]);
     action.setLoop( THREE.LoopOnce )
     action.clampWhenFinished = true
-    for(let i=0;i<7;i++){
-        cube_fragments[i]=cube.getObjectById(39+i,true)
-        //cube_fragments[i].position.set(0,0,0);
-        cube_fragments[i].scale.set(0.32,0.32,0.32);
-        scene.add(cube_fragments[i])
-    }
-
+    console.log(cube_fragments)
     //scene.add(cube_fragments)
-    //action.play();
-
+    action.play();
+   
 
 }, undefined, function ( error ) {
  
@@ -56,12 +49,27 @@ loader.load( 'models/soma-cube.glb', function ( gltf ) {
  
 } );
 
-console.log(cube_fragments)
-//var segment1=cube.getObjectByName( "objectName", true );
-//segment1.position.set(0,0,0)
-//segment1.scale.set(0.5,0.5,0.5)
-//scene.add(segment1)
 
+function getFragments(gltf){
+    for(let i=0;i<7;i++){
+        cube_fragments[i]=soma_cube.getObjectById(39+i,true)
+        //cube_fragments[i].position.set(0,0,0);
+        cube_fragments[i].scale.set(0.32,0.32,0.32);
+        scene.add(cube_fragments[i])
+    }
+
+}
+/*console.log(soma_cube)
+for(let i=0;i<7;i++){
+    cube_fragments[i]=cube.getObjectByName("pCube2",true)
+    //cube_fragments[i].position.set(0,0,0);
+    console.log(cube.getObjectById(17,true))
+
+    cube_fragments[i].scale.set(0.32,0.32,0.32);
+    scene.add(cube_fragments[i])
+}*/
+
+console.log(scene.children)
  
 var tokensList=[]
 
@@ -79,7 +87,6 @@ for(let i=0;i<8;i++){
 }
  
 
-
 /* Initial Cube setup and creation */
 const cubeGeo = new THREE.BoxGeometry( 1, 1, 1 );
 const cubeMat = new THREE.MeshPhongMaterial({color: '#8AC'});
@@ -94,7 +101,7 @@ var matProps = {
     specular: '#a9fcff',
     color: '#00abb1',
     emissive: '#006063',
-    shininess: 1
+    shininess: 0
 }
 var sphereMaterial = new THREE.MeshPhongMaterial(matProps);
 var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
@@ -116,7 +123,7 @@ cylinder.scale.set(0,0,0);
 pivot = new THREE.Group();
 pivot.position.set( 0.0, 0.0, 0 );
 scene.add( pivot );
-//pivot.add( cube );
+pivot.add( cube );
 pivot.add( sphere );
 
 
@@ -145,20 +152,29 @@ var tokenArray = [];
 
 /* Light properties */
 const color = 0xFFFFFF;
-const intensity = 1;
-const light = new THREE.PointLight(color, intensity);
-light.position.set(0, 3, -10);
-//light.target.position.set(0, 0, 0);
-scene.add(light);
+const intensity = 3;
+const light2 = new THREE.PointLight(color, intensity);
+//light2.position.set(0, 3, 0);
+light2.position.copy( camera.getWorldPosition() );
+//light2.target.position.set(0, 0, 0);
+scene.add(light2);
 //scene.add(light.target);
 
 // ambient
- scene.add( new THREE.AmbientLight( 0xffffff, 0.1 ) ); // optional
+//scene.add( new THREE.AmbientLight( 0xffffff, 1) ); // optional
 
-
-
+light = new THREE.SpotLight(0xFFFFFF,0.5);
+light.position.set(-1,1.2,1.2);
+//light.position.copy( camera.getWorldPosition() );
+light.castShadow = true;
+scene.add( light );
+const spotLightHelper = new THREE.SpotLightHelper( light );
+scene.add( spotLightHelper );
 //scene.add(helper);
 
+
+const axesHelper = new THREE.AxesHelper( 5 );
+scene.add( axesHelper );
 //scene.add( new THREE.AxesHelper() );
 
 
@@ -208,8 +224,8 @@ let tl = gsap.timeline({
   });
     
 
-tl.to(cube_fragments[0].position,{x:0,y:0,z:0,duration:2},0)
-.to(pivot.rotation, { y:3 ,duration:1.5},">1")
+//.to(cube_fragments[0].position,{x:0,y:0,z:0,duration:2},0)
+tl.to(pivot.rotation, { y:3 ,duration:1.5},">1")
 .to(sphere.scale,{x:4.75,y:4.75,z:4.75,duration:1.5},"1")
 .to(cube.position,{x:cube.position.x+0.05},"3")
 .to(sphere.position,{x:sphere.position.x+0.06},"3")
