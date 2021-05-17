@@ -22,6 +22,10 @@ renderer.setClearColor("white");
 renderer.setPixelRatio(window.devicePixelRatio);
 document.body.appendChild(renderer.domElement);
 
+
+var cube_fragments=[];
+//cube_fragments[0]=new THREE.Object3D();
+
 const loader = new THREE.GLTFLoader();
 var soma_cube;
 const cube=new THREE.Object3D();
@@ -35,12 +39,15 @@ loader.load( 'models/soma-cube.glb', function ( gltf ) {
     action=mixer.clipAction(gltf.animations[0]);
     action.setLoop( THREE.LoopOnce )
     action.clampWhenFinished = true
-    
-    //scene.add(cube)
-    //var action = mixer.clipAction( gltf.animations[ 0 ] );
-    // access first animation clip
-    action.play();
+    for(let i=0;i<7;i++){
+        cube_fragments[i]=cube.getObjectById(39+i,true)
+        //cube_fragments[i].position.set(0,0,0);
+        cube_fragments[i].scale.set(0.32,0.32,0.32);
+        scene.add(cube_fragments[i])
+    }
 
+    //scene.add(cube_fragments)
+    //action.play();
 
 
 }, undefined, function ( error ) {
@@ -49,7 +56,11 @@ loader.load( 'models/soma-cube.glb', function ( gltf ) {
  
 } );
 
-
+console.log(cube_fragments)
+//var segment1=cube.getObjectByName( "objectName", true );
+//segment1.position.set(0,0,0)
+//segment1.scale.set(0.5,0.5,0.5)
+//scene.add(segment1)
 
  
 var tokensList=[]
@@ -67,7 +78,6 @@ for(let i=0;i<8;i++){
     } );
 }
  
- console.log(tokensList);
 
 
 /* Initial Cube setup and creation */
@@ -106,7 +116,7 @@ cylinder.scale.set(0,0,0);
 pivot = new THREE.Group();
 pivot.position.set( 0.0, 0.0, 0 );
 scene.add( pivot );
-pivot.add( cube );
+//pivot.add( cube );
 pivot.add( sphere );
 
 
@@ -198,7 +208,7 @@ let tl = gsap.timeline({
   });
     
 
-tl
+tl.to(cube_fragments[0].position,{x:0,y:0,z:0,duration:2},0)
 .to(pivot.rotation, { y:3 ,duration:1.5},">1")
 .to(sphere.scale,{x:4.75,y:4.75,z:4.75,duration:1.5},"1")
 .to(cube.position,{x:cube.position.x+0.05},"3")
