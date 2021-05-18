@@ -23,15 +23,6 @@ renderer.setPixelRatio(window.devicePixelRatio);
 document.body.appendChild(renderer.domElement);
 
 
-var planeGeometry = new THREE.PlaneGeometry( 200, 200, 32 );
-  var planeMaterial = new THREE.MeshPhongMaterial({
-    color: "white", side: THREE.DoubleSide})
-  var plane = new THREE.Mesh( planeGeometry, planeMaterial );
-  plane.position.set(0,-1.2,0)
-  plane.receiveShadow = true;
-  plane.rotation.x = -Math.PI / 2;
-  //scene.add( plane );
-
 var global=this;
 
 const cube_fragments=[];
@@ -39,10 +30,10 @@ const cube_fragments=[];
 const loader = new THREE.GLTFLoader();
 let soma_cube;
 const cube=new THREE.Object3D();
-loader.load( 'models/soma-cube.glb',function ( gltf ) {
-    soma_cube=gltf.scene
+
+/* Load cube model */
+loader.load( 'models/soma-cube.glb',function getFragments( gltf ) {
     cube.add(gltf.scene)
-    //scene.add(cube)
     cube.scale.set(0.32,0.32,0.32);
     cube.rotation.set(0,0,0);
     cube.position.set(0.425,-0.34,0.2);
@@ -52,20 +43,19 @@ loader.load( 'models/soma-cube.glb',function ( gltf ) {
     action=mixer.clipAction(gltf.animations[0]);
     action.setLoop( THREE.LoopOnce )
     action.clampWhenFinished = true
-    //console.log(cube_fragments)
     //getFragments(gltf.scene);
     for(let i=0;i<7;i++){
         cube_fragments[i]=new THREE.Object3D();
-        cube_fragments[i]=cube.getObjectById(39+i,true)
-        cube_fragments[i].position.set(0,0,0);
+        cube_fragments[i]=gltf.scene.getObjectById(41+i,true)
+        //cube_fragments[i].position.set(0,0,0);
 
        // cube_fragments[i].scale.set(0.32,0.32,0.32);
         //scene.add(cube_fragments[i])
     }
-    console.log(global.cube_fragments)
+    console.log(cube_fragments)
     //scene.add(cube_fragments)
     action.play();
-   
+    return cube_fragments
 
 }, undefined, function ( error ) {
  
@@ -74,8 +64,7 @@ loader.load( 'models/soma-cube.glb',function ( gltf ) {
 } );
 
 
-
-
+/* Load desktop model */
 const desktop=new THREE.Object3D();
 loader.load("models/desktop.glb", function(gltf){
     desktop.add(gltf.scene)
@@ -83,14 +72,13 @@ loader.load("models/desktop.glb", function(gltf){
     desktop.position.set(0.175,0,0)
     desktop.scale.set(0,0,0)
     desktop.rotation.set(0,-3,0)
-    cube.castShadow = true; //default is false
-    cube.receiveShadow = true
+    desktop.castShadow = true; //default is false
+    desktop.receiveShadow = true
     }, undefined, function ( error ) {
      
         console.error( error );
      
 } );
-
 
 /*console.log(soma_cube)
 for(let i=0;i<7;i++){
@@ -104,6 +92,8 @@ for(let i=0;i<7;i++){
 
 console.log(global.cube_fragments)
  
+
+/* Load token models */ 
 var tokensList=[]
 
 for(let i=0;i<8;i++){
@@ -156,16 +146,15 @@ var tokenArray = [];
 /* Light properties */
 const color = 0xFFFFFF;
 const intensity = 1;
-const light2 = new THREE.DirectionalLight(color, intensity);
-light2.position.set(0.7, 1.1, -0.4);
-light2.shadowDarkness = 0.5;
-scene.add(light2);
+const dirlight = new THREE.DirectionalLight(color, intensity);
+dirlight.position.set(0.7, 1.1, -0.4);
+scene.add(dirlight);
 
 
-light = new THREE.SpotLight(0xFFFFFF,1);
-light.position.set(-4.8,-4,-6.8);
-light.castShadow = true;
-scene.add( light );
+spotlight = new THREE.SpotLight(color,intensity);
+spotlight.position.set(-4.8,-4,-6.8);
+spotlight.castShadow = true;
+scene.add( spotlight );
 
 
 
@@ -178,15 +167,15 @@ scene.add( light );
   }
 
     function updateLight() {
-      light.target.updateMatrixWorld();
+      spotlight.target.updateMatrixWorld();
       //helper.update();
     }
     updateLight();
 
 
-/*const gui = new dat.GUI();
-makeXYZGUI(gui, desktop.position, 'position', updateLight);
-makeXYZGUI(gui, desktop.rotation, 'rotation', updateLight);*/
+//const gui = new dat.GUI();
+//makeXYZGUI(gui, desktop.position, 'position', updateLight);
+//makeXYZGUI(gui, desktop.rotation, 'rotation', updateLight);
 
 
 
@@ -241,13 +230,13 @@ let tl = gsap.timeline({
 //.to(cube_fragments[0].position,{x:0,y:0,z:0,duration:2},0)
 tl.to(pivot.rotation, { y:3 ,duration:1.5},">1")
 .to(desktop.rotation,{x:-1,y:-1.2,z:-1,duration:1.5},"1")
-.to(desktop.position,{x:-1.35,y:0,z:0.3,duration:1.5},"1")
+.to(desktop.position,{x:-1.35,y:0.4,z:0.22,duration:1.5},"1")
 .to(desktop.scale,{x:0.1,y:0.1,z:0.1,duration:1.5},"1")
 .to(cube.position,{x:cube.position.x+0.05},"3")
 .to(desktop.position,{x:-1.1},"3")
 .to(cube.position,{x:0.425},"3.5")
 .to(desktop.position,{x:-1.35},"3.5")
-.to(desktop.position,{x:-1,y:-0.5,duration:1.5},"4")
+.to(desktop.position,{y:-0.2,duration:1.5},"4")
 .to(desktop.rotation,{x:-0.8,duration:1.5},"4")
 .to(pivot.rotation,{y:0,z:pivot.rotation.z+0.001,duration:1.5},"4")
 .to(pivot.rotation,{y:-3.5,duration:2},"7.5")
@@ -278,8 +267,8 @@ tl.to(pivot.rotation, { y:3 ,duration:1.5},">1")
 .to(tokenPivot[5].rotation,{x:-2.6-3,duration:8},"16.75")
 .to(tokenPivot[6].rotation,{x:-1.8-3,duration:8},"16.75")
 .to(tokenPivot[7].rotation,{x:-1-3,duration:8},"16.75")
-.to(light.position,{x:10,z:5,duration:2},"9.5")
-.to(light,{intensity:1.75,duration:2},"9.5")
+.to(spotlight.position,{x:10,z:5,duration:2},"9.5")
+.to(spotlight,{intensity:1.75,duration:2},"9.5")
 .to([tokenArray[0].position,tokenArray[1].position,tokenArray[2].position,
     tokenArray[3].position,tokenArray[4].position,
     tokenArray[5].position,tokenArray[6].position,
@@ -288,7 +277,7 @@ tl.to(pivot.rotation, { y:3 ,duration:1.5},">1")
     tokenArray[3].scale,tokenArray[4].scale,
     tokenArray[5].scale,tokenArray[6].scale,
     tokenArray[7].scale],{x:0,y:0,z:0,duration:1},"23")
-.to(light.position,{x:0,z:5,duration:1},"23.5")
+.to(spotlight.position,{x:0,z:5,duration:1},"23.5")
 
 //.to(tokenArray[0].position,{z:0,duration:1.4},"10.3");
 
