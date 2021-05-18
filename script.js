@@ -282,11 +282,11 @@ tl.to(pivot.rotation, { y:3 ,duration:1.5},">1")
 
 //.to(tokenArray[0].position,{z:0,duration:1.4},"10.3");
 
-
+history.scrollRestoration = "manual"
           
-
-
-
+$(window).on('beforeunload', function() {
+    $(window).scrollTop(0);
+});
 
 
           
