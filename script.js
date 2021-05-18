@@ -4,10 +4,13 @@ let mixer;
 let action;
 //let controls;
 
+
+var canvas_div=document.getElementById("canvas_column");
+
 /* Scene Creation */
 let scene = new THREE.Scene();
 var clock = new THREE.Clock();
-camera = new THREE.PerspectiveCamera(45,window.innerWidth / window.innerHeight,0.1,1000),
+camera = new THREE.PerspectiveCamera(45,canvas_div.clientWidth / (window.innerHeight),0.1,1000),
 camera.position.set(0,2.5,3.75),
 scene.rotation.set(0, -1.9, 0)
 camera.lookAt( scene.position );
@@ -17,10 +20,10 @@ renderer = new THREE.WebGLRenderer({
     canvas: document.getElementById("canvas")
 });
 
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize(canvas_div.clientWidth, window.innerHeight);
 renderer.setClearColor("white");
-renderer.setPixelRatio(window.devicePixelRatio);
-document.body.appendChild(renderer.domElement);
+//renderer.setPixelRatio(window.devicePixelRatio);
+document.getElementById("canvas_column").appendChild(renderer.domElement);
 
 
 var global=this;
@@ -52,7 +55,7 @@ loader.load( 'models/soma-cube.glb',function getFragments( gltf ) {
        // cube_fragments[i].scale.set(0.32,0.32,0.32);
         //scene.add(cube_fragments[i])
     }
-    console.log(cube_fragments)
+   // console.log(cube_fragments)
     //scene.add(cube_fragments)
     action.play();
     return cube_fragments
@@ -90,8 +93,7 @@ for(let i=0;i<7;i++){
     scene.add(cube_fragments[i])
 }*/
 
-console.log(global.cube_fragments)
- 
+
 
 /* Load token models */ 
 var tokensList=[]
@@ -179,11 +181,10 @@ scene.add( spotlight );
 
 
 
-
 function onWindowResize() {
-    camera.aspect = container.clientWidth / container.clientHeight;
+    camera.aspect = canvas_div.clientWidth / window.clientHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setSize(canvas_div.clientWidth, window.clientHeight);
 }
     
 window.addEventListener("resize", onWindowResize);

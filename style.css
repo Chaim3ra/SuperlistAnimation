@@ -9,6 +9,8 @@ body {
 
 #canvas {
     position: fixed;
+    width: 100%;
+    height: auto;
 	margin: 0;
 	padding: 0;
     left: 0;
@@ -16,15 +18,13 @@ body {
     right: 0;
     bottom: 0;
     background-color: white;
-    width: 100vw;
-    height: 100vh;
     z-index: -1;
 }
 
+
 section {
     position: absolute;
-    left: 50%;
-    width: 50vw;
+    width: 100%;
     z-index: 2
     margin:1vw;
 
