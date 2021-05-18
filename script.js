@@ -182,9 +182,9 @@ scene.add( spotlight );
 
 
 function onWindowResize() {
-    camera.aspect = canvas_div.clientWidth / window.clientHeight;
+    camera.aspect = canvas_div.clientWidth / container.clientHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(canvas_div.clientWidth, window.clientHeight);
+    renderer.setSize(canvas_div.clientWidth, container.clientHeight);
 }
     
 window.addEventListener("resize", onWindowResize);
