@@ -214,7 +214,7 @@ let animate = function() {
 };
 
 animate();
-    
+
        
 gsap.registerPlugin(ScrollTrigger);
         
