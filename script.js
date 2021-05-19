@@ -9,7 +9,7 @@ var canvas_div=document.getElementById("canvas_column");
 /* Scene Creation */
 let scene = new THREE.Scene();
 var clock = new THREE.Clock();
-camera = new THREE.PerspectiveCamera(45,canvas_div.clientWidth / (window.innerHeight),0.1,1000),
+camera = new THREE.PerspectiveCamera(45,window.innerWidth / (window.innerHeight),0.1,1000),
 camera.position.set(0,2.5,3.75),
 scene.rotation.set(0, -1.9, 0)
 camera.lookAt( scene.position );
@@ -18,13 +18,14 @@ camera.lookAt( scene.position );
 /* Rendering parameters */
 renderer = new THREE.WebGLRenderer({
     antialias: true,
-    canvas: document.getElementById("canvas")
+    canvas: document.getElementById("canvas"),
+    powerPreference: "high-performance"
 });
 
-renderer.setSize(canvas_div.clientWidth, window.innerHeight);
+renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setClearColor("white");
 renderer.setPixelRatio(window.devicePixelRatio);
-document.getElementById("canvas_column").appendChild(renderer.domElement);
+document.getElementsByClassName("row")[0].appendChild(renderer.domElement);
 
 
 const loader = new THREE.GLTFLoader();
@@ -142,9 +143,9 @@ scene.add( spotlight );
 
 
 function onWindowResize() {
-    camera.aspect = (canvas_div.clientWidth*0.50) / container.clientHeight;
+    camera.aspect = container.clientWidth / container.clientHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(canvas_div.clientWidth, container.clientHeight);
+    renderer.setSize(container.clientWidth, container.clientHeight);
 }
     
    
@@ -244,7 +245,7 @@ tl.to(mixerScroll,{amount:5,onUpdate: function () {
 .to(spotlight.position,{x:0,z:5,duration:1},"27.5")
 
 
-
+/* scroll to top on page refresh */
 history.scrollRestoration = "manual"
           
 $(window).on('beforeunload', function() {
