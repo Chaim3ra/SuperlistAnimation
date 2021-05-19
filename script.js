@@ -9,7 +9,7 @@ var canvas_div=document.getElementById("canvas_column");
 /* Scene Creation */
 let scene = new THREE.Scene();
 var clock = new THREE.Clock();
-camera = new THREE.PerspectiveCamera(45,window.innerWidth / (window.innerHeight),0.1,1000),
+camera = new THREE.PerspectiveCamera(45,canvas_div.clientWidth / (window.innerHeight),0.1,1000),
 camera.position.set(0,2.5,3.75),
 scene.rotation.set(0, -1.9, 0)
 camera.lookAt( scene.position );
@@ -19,20 +19,21 @@ camera.lookAt( scene.position );
 renderer = new THREE.WebGLRenderer({
     antialias: true,
     canvas: document.getElementById("canvas"),
-    powerPreference: "high-performance"
+    powerPreference: "high-performance",
+    alpha:true
 });
 
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor("white");
+renderer.setSize(canvas_div.clientWidth, window.innerHeight);
+renderer.setClearColor( 0x000000, 0);
 renderer.setPixelRatio(window.devicePixelRatio);
-document.getElementsByClassName("row")[0].appendChild(renderer.domElement);
+document.getElementById("canvas_column").appendChild(renderer.domElement);
 
 
 const loader = new THREE.GLTFLoader();
 const cube=new THREE.Object3D();
 
 /* Load cube model */
-loader.load( 'models/soma-cube.glb',function getFragments( gltf ) {
+loader.load( 'models/cube.glb',function getFragments( gltf ) {
     cube.add(gltf.scene)
     cube.scale.set(0.32,0.32,0.32);
     cube.rotation.set(0,0,0);
@@ -137,15 +138,15 @@ scene.add( spotlight );
 
 
 //const gui = new dat.GUI();
-//makeXYZGUI(gui, camera.position, 'position', updateLight);
+//makeXYZGUI(gui, scene.position, 'position', updateLight);
 //makeXYZGUI(gui, camera.rotation, 'rotation', updateLight);
 
 
 
 function onWindowResize() {
-    camera.aspect = container.clientWidth / container.clientHeight;
+    camera.aspect = canvas_div.clientWidth*0.90 / container.clientHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setSize(canvas_div.clientWidth*0.90, container.clientHeight);
 }
     
    
