@@ -136,7 +136,7 @@ scene.add( spotlight );
     updateLight();
 
 
-const gui = new dat.GUI();
+//const gui = new dat.GUI();
 //gui.add(camera, 'fov', 1, 180).onChange(updateLight);
 //makeXYZGUI(gui, scene.position, 'position', updateLight);
 //makeXYZGUI(gui, camera.zoom, 'zoom', updateLight);
