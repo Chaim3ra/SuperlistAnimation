@@ -4,6 +4,7 @@ let mixer;
 let action;
 
 
+
 var canvas_div=document.getElementById("canvas_column");
 
 /* Scene Creation */
@@ -115,7 +116,7 @@ dirlight.position.set(0.7, 1.1, -0.4);
 scene.add(dirlight);
 
 
-spotlight = new THREE.SpotLight(color,intensity);
+spotlight = new THREE.SpotLight(color,0.75);
 spotlight.position.set(-4.8,-4,-6.8);
 spotlight.castShadow = true;
 scene.add( spotlight );
@@ -124,9 +125,7 @@ scene.add( spotlight );
 
  function makeXYZGUI(gui, vector3, name, onChangeFn) {
     const folder = gui.addFolder(name);
-    folder.add(vector3, 'x', -10, 10).onChange(onChangeFn);
-    folder.add(vector3, 'y', -10, 10).onChange(onChangeFn);
-    folder.add(vector3, 'z', -10, 10).onChange(onChangeFn);
+    folder.add(vector3, 'zoom', -10, 10).onChange(onChangeFn);
     folder.open();
   }
 
@@ -137,9 +136,10 @@ scene.add( spotlight );
     updateLight();
 
 
-//const gui = new dat.GUI();
+const gui = new dat.GUI();
+//gui.add(camera, 'fov', 1, 180).onChange(updateLight);
 //makeXYZGUI(gui, scene.position, 'position', updateLight);
-//makeXYZGUI(gui, camera.rotation, 'rotation', updateLight);
+//makeXYZGUI(gui, camera.zoom, 'zoom', updateLight);
 
 
 
@@ -244,6 +244,19 @@ tl.to(mixerScroll,{amount:5,onUpdate: function () {
     tokenArray[5].scale,tokenArray[6].scale,
     tokenArray[7].scale],{x:0,y:0,z:0,duration:1},"27")
 .to(spotlight.position,{x:0,z:5,duration:1},"27.5")
+
+
+/* media queries */
+if(window.matchMedia("(max-width: 991.98px)").matches){
+     document.getElementById("canvas").style.top="13vh"; // push canvas down
+}
+if(window.matchMedia("(max-width: 575.98px)").matches){
+    camera.fov = 55; // zoom out for small screens
+    camera.updateProjectionMatrix();
+    document.getElementById("canvas").style.top="15vh";
+}
+
+
 
 
 /* scroll to top on page refresh */
