@@ -188,7 +188,11 @@ function onWindowResize() {
 }
     
 window.addEventListener("resize", onWindowResize);
-    
+ 
+function seekCubeAnimation(animMixer, timeInSeconds){
+    animMixer.time=0;
+    animMixer.setTime(timeInSeconds)
+  }    
 
 function render() {
 renderer.render(scene, camera);
@@ -197,7 +201,7 @@ renderer.shadowMapEnabled = true;
 
 /* main */
 let animate = function() {
-    if ( mixer ) mixer.update(0.0166 );
+    //if ( mixer ) mixer.update(0.0166 );
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
     
@@ -207,7 +211,8 @@ animate();
 
        
 gsap.registerPlugin(ScrollTrigger);
-        
+       
+var mixerScroll={amount:0} ;
            
 ScrollTrigger.defaults({
     immediateRender: false,
@@ -221,7 +226,7 @@ let tl = gsap.timeline({
     start: "top top", 
     endTrigger: ".section-five",
     end: "bottom bottom", 
-    scrub: 3, 
+    scrub: 1, 
           }          
   });
     
@@ -229,58 +234,62 @@ let tl = gsap.timeline({
  /* Animation timeline  */ 
 
 //.to(cube_fragments[0].position,{x:0,y:0,z:0,duration:2},0)
-tl.to(pivot.rotation, { y:3 ,duration:1.5},">1")
-.to(desktop.rotation,{x:-1,y:-1.2,z:-1,duration:1.5},"1")
-.to(desktop.position,{x:-1.35,y:0.4,z:0.22,duration:1.5},"1")
-.to(desktop.scale,{x:0.1,y:0.1,z:0.1,duration:1.5},"1")
-.to(cube.position,{x:cube.position.x+0.05},"3")
-.to(desktop.position,{x:-1.1},"3")
-.to(cube.position,{x:0.425},"3.5")
-.to(desktop.position,{x:-1.35},"3.5")
-.to(desktop.position,{y:-0.2,duration:1.5},"4")
-.to(desktop.rotation,{x:-0.8,duration:1.5},"4")
-.to(pivot.rotation,{y:0,z:pivot.rotation.z+0.001,duration:1.5},"4")
-.to(pivot.rotation,{y:-3.5,duration:2},"7.5")
-.to([cube.position,desktop.position],{x:0,y:0,z:0,duration:1.5},"7.5")
-.to([cube.scale,desktop.scale],{x:0,y:0,z:0,duration:1.35},"7.6")
+tl.to(mixerScroll,{amount:5,onUpdate: function () {
+        seekCubeAnimation(mixer, mixerScroll.amount);
+      },duration:5},"0")
+.to(pivot.rotation, { y:3 ,duration:1.5},"5")
+.to(desktop.rotation,{x:-1,y:-1.2,z:-1,duration:1.5},"5")
+.to(desktop.position,{x:-1.35,y:0.4,z:0.22,duration:1.5},"5")
+.to(desktop.scale,{x:0.1,y:0.1,z:0.1,duration:1.5},"5")
+.to(cube.position,{x:cube.position.x+0.05},"7")
+.to(desktop.position,{x:-1.1},"7")
+.to(cube.position,{x:0.425},"7.5")
+.to(desktop.position,{x:-1.35},"7.5")
+.to(desktop.position,{y:-0.2,duration:1.5},"8")
+.to(desktop.rotation,{x:-0.8,duration:1.5},"8")
+.to(pivot.rotation,{y:0,z:pivot.rotation.z+0.001,duration:1.5},"8")
+.to(pivot.rotation,{y:-3.5,duration:2},"11.5")
+.to([cube.position,desktop.position],{x:0,y:0,z:0,duration:1.5},"11.5")
+.to([cube.scale,desktop.scale],{x:0,y:0,z:0,duration:1.35},"11.6")
 .to([tokenArray[0].scale,tokenArray[1].scale,tokenArray[2].scale,
     tokenArray[3].scale,tokenArray[4].scale,
     tokenArray[5].scale,tokenArray[6].scale,
-    tokenArray[7].scale],{x:0.62,y:0.62,z:0.62,duration:1.4},"8.75")
+    tokenArray[7].scale],{x:0.62,y:0.62,z:0.62,duration:1.4},"12.75")
 //.to(tokenArray[0].rotation,{x:5,z:5.5,duration:1.4},"8.75")
 .to([tokenArray[0].position,tokenArray[1].position,tokenArray[2].position,
     tokenArray[3].position,tokenArray[4].position,
     tokenArray[5].position,tokenArray[6].position,
-    tokenArray[7].position],{z:-0.75,y:-1.1,duration:1.4},"8.75")
-.to(tokenPivot[0].rotation,{x:-6.5,duration:8},"8.75")
-.to(tokenPivot[1].rotation,{x:-5.7,duration:8},"8.75")
-.to(tokenPivot[2].rotation,{x:-4.9,duration:8},"8.75")
-.to(tokenPivot[3].rotation,{x:-4.2,duration:8},"8.75")
-.to(tokenPivot[4].rotation,{x:-3.3,duration:8},"8.75")
-.to(tokenPivot[5].rotation,{x:-2.5,duration:8},"8.75")
-.to(tokenPivot[6].rotation,{x:-1.7,duration:8},"8.75")
-.to(tokenPivot[7].rotation,{x:-1,duration:8},"8.75")
-.to(tokenPivot[0].rotation,{x:-6.6-3,duration:8},"16.75")
-.to(tokenPivot[1].rotation,{x:-5.8-3,duration:8},"16.75")
-.to(tokenPivot[2].rotation,{x:-5-3,duration:8},"16.75")
-.to(tokenPivot[3].rotation,{x:-4.2-3,duration:8},"16.75")
-.to(tokenPivot[4].rotation,{x:-3.4-3,duration:8},"16.75")
-.to(tokenPivot[5].rotation,{x:-2.6-3,duration:8},"16.75")
-.to(tokenPivot[6].rotation,{x:-1.8-3,duration:8},"16.75")
-.to(tokenPivot[7].rotation,{x:-1-3,duration:8},"16.75")
-.to(spotlight.position,{x:10,z:5,duration:2},"9.5")
-.to(spotlight,{intensity:1.75,duration:2},"9.5")
+    tokenArray[7].position],{z:-0.75,y:-1.1,duration:1.4},"12.75")
+.to(tokenPivot[0].rotation,{x:-6.5,duration:8},"12.75")
+.to(tokenPivot[1].rotation,{x:-5.7,duration:8},"12.75")
+.to(tokenPivot[2].rotation,{x:-4.9,duration:8},"12.75")
+.to(tokenPivot[3].rotation,{x:-4.2,duration:8},"12.75")
+.to(tokenPivot[4].rotation,{x:-3.3,duration:8},"12.75")
+.to(tokenPivot[5].rotation,{x:-2.5,duration:8},"12.75")
+.to(tokenPivot[6].rotation,{x:-1.7,duration:8},"12.75")
+.to(tokenPivot[7].rotation,{x:-1,duration:8},"12.75")
+.to(tokenPivot[0].rotation,{x:-6.6-3,duration:8},"20.75")
+.to(tokenPivot[1].rotation,{x:-5.8-3,duration:8},"20.75")
+.to(tokenPivot[2].rotation,{x:-5-3,duration:8},"20.75")
+.to(tokenPivot[3].rotation,{x:-4.2-3,duration:8},"20.75")
+.to(tokenPivot[4].rotation,{x:-3.4-3,duration:8},"20.75")
+.to(tokenPivot[5].rotation,{x:-2.6-3,duration:8},"20.75")
+.to(tokenPivot[6].rotation,{x:-1.8-3,duration:8},"20.75")
+.to(tokenPivot[7].rotation,{x:-1-3,duration:8},"20.75")
+.to(spotlight.position,{x:10,z:5,duration:2},"13.5")
+.to(spotlight,{intensity:1.75,duration:2},"13.5")
 .to([tokenArray[0].position,tokenArray[1].position,tokenArray[2].position,
     tokenArray[3].position,tokenArray[4].position,
     tokenArray[5].position,tokenArray[6].position,
-    tokenArray[7].position],{x:0,y:0,z:0,duration:0.6},"23")
+    tokenArray[7].position],{x:0,y:0,z:0,duration:0.6},"27")
 .to([tokenArray[0].scale,tokenArray[1].scale,tokenArray[2].scale,
     tokenArray[3].scale,tokenArray[4].scale,
     tokenArray[5].scale,tokenArray[6].scale,
-    tokenArray[7].scale],{x:0,y:0,z:0,duration:1},"23")
-.to(spotlight.position,{x:0,z:5,duration:1},"23.5")
+    tokenArray[7].scale],{x:0,y:0,z:0,duration:1},"27")
+.to(spotlight.position,{x:0,z:5,duration:1},"27.5")
 
 //.to(tokenArray[0].position,{z:0,duration:1.4},"10.3");
+
 
 history.scrollRestoration = "manual"
           
