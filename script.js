@@ -33,14 +33,22 @@ document.getElementById("canvas_column").appendChild(renderer.domElement);
 const loader = new THREE.GLTFLoader();
 const cube=new THREE.Object3D();
 
+var newMaterial = new THREE.MeshStandardMaterial({color: '#7a7aa4'})
 /* Load cube model */
-loader.load( 'models/cube2.glb',function getFragments( gltf ) {
+loader.load( 'models/cube.glb',function getFragments( gltf ) {
     cube.add(gltf.scene)
     cube.scale.set(0.32,0.32,0.32);
     cube.rotation.set(0,0,0);
     cube.position.set(0.425,-0.34,0.2);
     cube.castShadow = true;
     cube.receiveShadow = true;
+    cube.traverse((node) => {
+        if (node.isMesh) {
+            node.material.flatShading = true;
+            node.material = newMaterial;
+            node.material.opacity=0
+        }
+    });
     mixer = new THREE.AnimationMixer(cube);
     action=mixer.clipAction(gltf.animations[0]);
     action.setLoop( THREE.LoopOnce )
@@ -51,6 +59,15 @@ loader.load( 'models/cube2.glb',function getFragments( gltf ) {
     console.error( error );
 } );
 
+/* Initial Cube setup and creation */
+const cubeGeo = new THREE.BoxGeometry( 0.955, 0.955, 0.955 );
+const cubeMat = new THREE.MeshPhongMaterial({color: '#7a7aa4'});
+const cube2 = new THREE.Mesh( cubeGeo, cubeMat );
+cube2.position.set(0.626,0.135,0.034);
+cube2.rotation.set(0.005,-0.0079,0.055);
+cube2.material.transparent=true;
+cube2.material.opacity=0;
+scene.add( cube2 );
 
 /* Load desktop model */
 const desktop=new THREE.Object3D();
@@ -140,8 +157,8 @@ scene.add( spotlight );
 
 //const gui = new dat.GUI();
 //gui.add(spotlight, 'intensity', 0, 2).onChange(updateLight);
-//makeXYZGUI(gui, spotlight.position, 'position', updateLight);
-//makeXYZGUI(gui, spotlight.rotation, 'rotation', updateLight);
+//makeXYZGUI(gui, cube2.position, 'position', updateLight);
+//makeXYZGUI(gui, cube2.rotation, 'rotation', updateLight);
 
 
 
@@ -158,6 +175,15 @@ function seekCubeAnimation(animMixer, timeInSeconds){
     animMixer.time=0;
     animMixer.setTime(timeInSeconds)
   }    
+
+function changeCubeFragmentOpacity(opacity){
+    cube.traverse((node) => {
+        if (node.isMesh) {
+            node.material.opacity=opacity;
+        }
+    });
+}
+
 
 function render() {
 renderer.render(scene, camera);
@@ -176,6 +202,7 @@ animate();
 gsap.registerPlugin(ScrollTrigger);
        
 var mixerScroll={amount:0} ;
+var opacityScroll={amount:1};
            
 ScrollTrigger.defaults({
     immediateRender: false,
@@ -196,7 +223,13 @@ let tl = gsap.timeline({
  /* Animation timeline  */ 
 tl.to(mixerScroll,{amount:5,onUpdate: function () {
         seekCubeAnimation(mixer, mixerScroll.amount);
+        changeCubeFragmentOpacity(mixerScroll.amount/5)
       },duration:5},"0")
+.to(cube2.material,{opacity:1,duration:0.1},"1.82")
+.to(opacityScroll,{amount:0,onUpdate: function () {
+        changeCubeFragmentOpacity(opacityScroll.amount)
+      },duration:0.1},"1.9")
+.to(cube.material,{opacity:0,duration:0.2},"1.8")
 .to(pivot.rotation, { y:3 ,duration:1.5},"5")
 .to(desktop.rotation,{x:-1,y:-1.2,z:-1.1,duration:1.5},"5")
 .to(desktop.position,{x:-1.35,y:0.3,z:0.155,duration:1.5},"5")
