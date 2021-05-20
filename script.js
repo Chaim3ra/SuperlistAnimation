@@ -138,10 +138,10 @@ scene.add( spotlight );
     updateLight();
 
 
-const gui = new dat.GUI();
-gui.add(spotlight, 'intensity', 0, 2).onChange(updateLight);
-makeXYZGUI(gui, spotlight.position, 'position', updateLight);
-makeXYZGUI(gui, spotlight.rotation, 'rotation', updateLight);
+//const gui = new dat.GUI();
+//gui.add(spotlight, 'intensity', 0, 2).onChange(updateLight);
+//makeXYZGUI(gui, spotlight.position, 'position', updateLight);
+//makeXYZGUI(gui, spotlight.rotation, 'rotation', updateLight);
 
 
 
