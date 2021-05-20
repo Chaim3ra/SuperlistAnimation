@@ -32,8 +32,9 @@ document.getElementById("canvas_column").appendChild(renderer.domElement);
 
 const loader = new THREE.GLTFLoader();
 const cube=new THREE.Object3D();
-
 var newMaterial = new THREE.MeshStandardMaterial({color: '#7a7aa4'})
+
+
 /* Load cube model */
 loader.load( 'models/cube.glb',function getFragments( gltf ) {
     cube.add(gltf.scene)
@@ -60,14 +61,15 @@ loader.load( 'models/cube.glb',function getFragments( gltf ) {
 } );
 
 /* Initial Cube setup and creation */
-const cubeGeo = new THREE.BoxGeometry( 0.955, 0.955, 0.955 );
+const cubeGeo = new THREE.BoxGeometry( 0.9615, 0.9615, 0.9615 );
 const cubeMat = new THREE.MeshPhongMaterial({color: '#7a7aa4'});
-const cube2 = new THREE.Mesh( cubeGeo, cubeMat );
-cube2.position.set(0.626,0.135,0.034);
-cube2.rotation.set(0.005,-0.0079,0.055);
-cube2.material.transparent=true;
-cube2.material.opacity=0;
-scene.add( cube2 );
+const solidCube = new THREE.Mesh( cubeGeo, cubeMat );
+solidCube.position.set(0.624,0.132,0.035);
+solidCube.rotation.set(-0.0001,-0.0079,0.055);
+solidCube.material.transparent=true;
+solidCube.material.opacity=0;
+scene.add( solidCube );
+
 
 /* Load desktop model */
 const desktop=new THREE.Object3D();
@@ -101,6 +103,7 @@ pivot.position.set( 0.0, 0.0, 0 );
 scene.add( pivot );
 pivot.add( cube );
 pivot.add( desktop );
+pivot.add(solidCube)
 
 
 var tokenPivot=[];
@@ -132,7 +135,6 @@ const dirlight = new THREE.DirectionalLight(color, intensity);
 dirlight.position.set(0.7, 1.1, -0.4);
 scene.add(dirlight);
 
-
 spotlight = new THREE.SpotLight(color,0.75);
 spotlight.position.set(-4.8,-4,-6.8);
 spotlight.castShadow = true;
@@ -157,8 +159,9 @@ scene.add( spotlight );
 
 //const gui = new dat.GUI();
 //gui.add(spotlight, 'intensity', 0, 2).onChange(updateLight);
-//makeXYZGUI(gui, cube2.position, 'position', updateLight);
-//makeXYZGUI(gui, cube2.rotation, 'rotation', updateLight);
+//makeXYZGUI(gui, solidCube.scale, 'scale', updateLight);
+//makeXYZGUI(gui, solidCube.position, 'position', updateLight);
+//makeXYZGUI(gui, solidCube.rotation, 'rotation', updateLight);
 
 
 
@@ -171,19 +174,6 @@ function onWindowResize() {
    
 window.addEventListener("resize", onWindowResize);
  
-function seekCubeAnimation(animMixer, timeInSeconds){
-    animMixer.time=0;
-    animMixer.setTime(timeInSeconds)
-  }    
-
-function changeCubeFragmentOpacity(opacity){
-    cube.traverse((node) => {
-        if (node.isMesh) {
-            node.material.opacity=opacity;
-        }
-    });
-}
-
 
 function render() {
 renderer.render(scene, camera);
@@ -201,11 +191,40 @@ animate();
        
 gsap.registerPlugin(ScrollTrigger);
        
+/* Scroll based functions */
 var mixerScroll={amount:0} ;
 var opacityScroll={amount:1};
+var cubeFadeIn={opacity:0};
+
+
+function seekCubeAnimation(animMixer, timeInSeconds){
+    animMixer.time=0;
+    animMixer.setTime(timeInSeconds)
+  }    
+
+
+function changeCubeFragmentOpacity(obj,opacity,objName){ 
+    obj.traverse((node) => {
+        if (node.isMesh) {
+            node.material.opacity=opacity;
+        }
+    });
+}
+
+
+function checkVisibility(obj)
+{   
+    if(opacityScroll.amount<=0.01){
+        obj.visible=false;
+    }
+    else{
+        obj.visible=true
+    }
+}
+
            
 ScrollTrigger.defaults({
-    immediateRender: false,
+    immediateRender: true,
     ease: "power1.easeinOut",
 });
     
@@ -221,29 +240,34 @@ let tl = gsap.timeline({
     
 
  /* Animation timeline  */ 
-tl.to(mixerScroll,{amount:5,onUpdate: function () {
+tl.to(cubeFadeIn,{opacity:1,onUpdate: function(){
+    changeCubeFragmentOpacity(cube,cubeFadeIn.opacity,"cube");
+    },duration:1},"0.7")
+.to(mixerScroll,{amount:5,onUpdate: function () {
         seekCubeAnimation(mixer, mixerScroll.amount);
-        changeCubeFragmentOpacity(mixerScroll.amount/5)
       },duration:5},"0")
-.to(cube2.material,{opacity:1,duration:0.1},"1.82")
+.call(checkVisibility,[cube],"1.5")
+.to(solidCube.material,{opacity:1,duration:0.1},"1.8275")
 .to(opacityScroll,{amount:0,onUpdate: function () {
-        changeCubeFragmentOpacity(opacityScroll.amount)
-      },duration:0.1},"1.9")
-.to(cube.material,{opacity:0,duration:0.2},"1.8")
+        changeCubeFragmentOpacity(cube,opacityScroll.amount,"solidCube")
+      },duration:0.1,
+      onComplete:checkVisibility,onCompleteParams:[cube,opacityScroll]},"1.9")
+.to(cube.material,{opacity:0,duration:0.2},"1.7")
+.call(checkVisibility,[cube],"1.9275")
 .to(pivot.rotation, { y:3 ,duration:1.5},"5")
 .to(desktop.rotation,{x:-1,y:-1.2,z:-1.1,duration:1.5},"5")
 .to(desktop.position,{x:-1.35,y:0.3,z:0.155,duration:1.5},"5")
 .to(desktop.scale,{x:0.1125,y:0.1125,z:0.1125,duration:1.5},"5")
-.to(cube.position,{x:cube.position.x+0.05},"7")
+.to(solidCube.position,{x:0.3},"7")
 .to(desktop.position,{x:-1.1},"7")
-.to(cube.position,{x:0.425},"7.5")
+.to(solidCube.position,{x:0.425},"7.5")
 .to(desktop.position,{x:-1.35},"7.5")
 .to(desktop.position,{y:-0.2,duration:1.5},"8")
 .to(desktop.rotation,{x:-0.8,z:-0.9,duration:1.5},"8")
 .to(pivot.rotation,{y:0,z:pivot.rotation.z+0.001,duration:1.5},"8")
 .to(pivot.rotation,{y:-3.5,duration:2},"11.5")
-.to([cube.position,desktop.position],{x:0,y:0,z:0,duration:1.5},"11.5")
-.to([cube.scale,desktop.scale],{x:0,y:0,z:0,duration:1.35},"11.6")
+.to([solidCube.position,desktop.position],{x:0,y:0,z:0,duration:1.5},"11.5")
+.to([solidCube.scale,desktop.scale],{x:0,y:0,z:0,duration:1.35},"11.6")
 .to([tokenArray[0].scale,tokenArray[1].scale,tokenArray[2].scale,
     tokenArray[3].scale,tokenArray[4].scale,
     tokenArray[5].scale,tokenArray[6].scale,
@@ -290,7 +314,6 @@ if(window.matchMedia("(max-width: 575.98px)").matches){
     camera.updateProjectionMatrix();
     document.getElementById("canvas").style.top="15vh";
 }
-
 
 
 
