@@ -159,9 +159,9 @@ scene.add( spotlight );
 
 //const gui = new dat.GUI();
 //gui.add(spotlight, 'intensity', 0, 2).onChange(updateLight);
-//makeXYZGUI(gui, solidCube.scale, 'scale', updateLight);
-//makeXYZGUI(gui, solidCube.position, 'position', updateLight);
-//makeXYZGUI(gui, solidCube.rotation, 'rotation', updateLight);
+//makeXYZGUI(gui, desktop.scale, 'scale', updateLight);
+//makeXYZGUI(gui, desktop.position, 'position', updateLight);
+//makeXYZGUI(gui, desktop.rotation, 'rotation', updateLight);
 
 
 
@@ -256,7 +256,7 @@ tl.to(cubeFadeIn,{opacity:1,onUpdate: function(){
 .call(checkVisibility,[cube],"1.9275")
 .to(pivot.rotation, { y:3 ,duration:1.5},"5")
 .to(desktop.rotation,{x:-1,y:-1.2,z:-1.1,duration:1.5},"5")
-.to(desktop.position,{x:-1.35,y:0.3,z:0.155,duration:1.5},"5")
+.to(desktop.position,{x:-1.35,y:0.3,z:0.135,duration:1.5},"5")
 .to(desktop.scale,{x:0.1125,y:0.1125,z:0.1125,duration:1.5},"5")
 .to(solidCube.position,{x:0.3},"7")
 .to(desktop.position,{x:-1.1},"7")
