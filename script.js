@@ -34,7 +34,7 @@ const loader = new THREE.GLTFLoader();
 const cube=new THREE.Object3D();
 
 /* Load cube model */
-loader.load( 'models/cube.glb',function getFragments( gltf ) {
+loader.load( 'models/cube2.glb',function getFragments( gltf ) {
     cube.add(gltf.scene)
     cube.scale.set(0.32,0.32,0.32);
     cube.rotation.set(0,0,0);
@@ -71,7 +71,7 @@ var tokensList=[]
 
 for(let i=0;i<8;i++){
     tokensList[i]=new THREE.Object3D();
-    loader.load("models/token.glb", function(gltf){
+    loader.load("models/dark_token.glb", function(gltf){
         tokensList[i].add(gltf.scene);
     }, undefined, function ( error ) {
         console.error( error );
@@ -125,7 +125,9 @@ scene.add( spotlight );
 
  function makeXYZGUI(gui, vector3, name, onChangeFn) {
     const folder = gui.addFolder(name);
-    folder.add(vector3, 'zoom', -10, 10).onChange(onChangeFn);
+    folder.add(vector3, 'x', -10, 10).onChange(onChangeFn);
+    folder.add(vector3, 'y', -10, 10).onChange(onChangeFn);
+    folder.add(vector3, 'z', -10, 10).onChange(onChangeFn);
     folder.open();
   }
 
@@ -136,10 +138,10 @@ scene.add( spotlight );
     updateLight();
 
 
-//const gui = new dat.GUI();
-//gui.add(camera, 'fov', 1, 180).onChange(updateLight);
-//makeXYZGUI(gui, scene.position, 'position', updateLight);
-//makeXYZGUI(gui, camera.zoom, 'zoom', updateLight);
+const gui = new dat.GUI();
+gui.add(spotlight, 'intensity', 0, 2).onChange(updateLight);
+makeXYZGUI(gui, spotlight.position, 'position', updateLight);
+makeXYZGUI(gui, spotlight.rotation, 'rotation', updateLight);
 
 
 
@@ -196,15 +198,15 @@ tl.to(mixerScroll,{amount:5,onUpdate: function () {
         seekCubeAnimation(mixer, mixerScroll.amount);
       },duration:5},"0")
 .to(pivot.rotation, { y:3 ,duration:1.5},"5")
-.to(desktop.rotation,{x:-1,y:-1.2,z:-1,duration:1.5},"5")
-.to(desktop.position,{x:-1.35,y:0.4,z:0.22,duration:1.5},"5")
-.to(desktop.scale,{x:0.1,y:0.1,z:0.1,duration:1.5},"5")
+.to(desktop.rotation,{x:-1,y:-1.2,z:-1.1,duration:1.5},"5")
+.to(desktop.position,{x:-1.35,y:0.3,z:0.155,duration:1.5},"5")
+.to(desktop.scale,{x:0.1125,y:0.1125,z:0.1125,duration:1.5},"5")
 .to(cube.position,{x:cube.position.x+0.05},"7")
 .to(desktop.position,{x:-1.1},"7")
 .to(cube.position,{x:0.425},"7.5")
 .to(desktop.position,{x:-1.35},"7.5")
 .to(desktop.position,{y:-0.2,duration:1.5},"8")
-.to(desktop.rotation,{x:-0.8,duration:1.5},"8")
+.to(desktop.rotation,{x:-0.8,z:-0.9,duration:1.5},"8")
 .to(pivot.rotation,{y:0,z:pivot.rotation.z+0.001,duration:1.5},"8")
 .to(pivot.rotation,{y:-3.5,duration:2},"11.5")
 .to([cube.position,desktop.position],{x:0,y:0,z:0,duration:1.5},"11.5")
@@ -225,8 +227,8 @@ tl.to(mixerScroll,{amount:5,onUpdate: function () {
 .to(tokenPivot[5].rotation,{x:-2.5,duration:8},"12.75")
 .to(tokenPivot[6].rotation,{x:-1.7,duration:8},"12.75")
 .to(tokenPivot[7].rotation,{x:-1,duration:8},"12.75")
-.to(spotlight.position,{x:10,z:5,duration:2},"13.5")
-.to(spotlight,{intensity:1.75,duration:2},"13.5")
+.to(spotlight.position,{x:10,z:5,duration:2},"14.25")
+.to(spotlight,{intensity:0.75,duration:2},"13.25")
 .to(tokenPivot[0].rotation,{x:-6.6-3,duration:8},"20.75")
 .to(tokenPivot[1].rotation,{x:-5.8-3,duration:8},"20.75")
 .to(tokenPivot[2].rotation,{x:-5-3,duration:8},"20.75")
