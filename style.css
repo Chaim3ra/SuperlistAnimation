@@ -21,7 +21,6 @@ body {
     z-index: -1;
 }
 
-
 section {
     position: absolute;
     width: 100%;
@@ -45,3 +44,6 @@ section p{
     font-size: 2.25vh;
 }
 
+@media (max-width: 575.98px) { 
+
+}

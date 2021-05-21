@@ -228,13 +228,81 @@ ScrollTrigger.defaults({
     ease: "power1.easeinOut",
 });
     
-    
+var scrollPercent=80;
+
+/* media queries */
+if(window.matchMedia("(max-width: 991.98px)").matches){
+
+     document.getElementById("canvas").style.top="13vh"; // push canvas down
+}
+if(window.matchMedia("(max-width: 575.98px)").matches){
+    scrollPercent=105;
+    camera.fov = 55; // zoom out for small screens
+    camera.updateProjectionMatrix();
+    document.getElementById("canvas").style.top="15vh";
+
+    //var section1=document.getElementsByClassName()
+    document.getElementsByClassName("row")[0].style.height="650vh";
+    console.log(document.getElementsByClassName("row")[0].style)
+    ScrollTrigger.create({
+        trigger: ".section-one",
+        start: "75% center",
+        pin: true,
+        endTrigger: ".section-two",
+        end: "10% center",
+        toggleActions: "play none none reverse",
+        animation: gsap.fromTo(".section-one .text-container",{opacity:0,duration:0},{opacity:1,duration:0.5})
+    });
+
+    ScrollTrigger.create({
+        trigger: ".section-two",
+        start: "75% center",
+        pin: true,
+        endTrigger: ".section-three",
+        end: "10% center",
+        toggleActions: "play none none reverse",
+        animation: gsap.fromTo(".section-two .text-container",{opacity:0,duration:0},{opacity:1,duration:0.5})
+    });
+
+    ScrollTrigger.create({
+        trigger: ".section-three",
+        start: "75% center",
+        pin: true,
+        endTrigger: ".section-four",
+        end: "10% center",
+        toggleActions: "play none none reverse",
+        animation:gsap.fromTo(".section-three .text-container",{opacity:0,duration:0},{opacity:1,duration:0.5})
+    });
+
+    ScrollTrigger.create({
+        trigger: ".section-four",
+        start: "75% center",
+        pin: true,
+        endTrigger: ".section-five",
+        end: "10% center",
+        toggleActions: "play none none reverse",
+        animation:gsap.fromTo(".section-four .text-container",{opacity:0,duration:0},{opacity:1,duration:0.5})
+    });
+
+    ScrollTrigger.create({
+        trigger: ".section-five",
+        start: "75% center",
+        pin: true,
+        endTrigger: ".spacer",
+        end: "10% center",
+        toggleActions: "play none none reverse",
+        animation:gsap.fromTo(".section-five .text-container",{opacity:0,duration:0},{opacity:1,duration:0.5})
+    });
+}
+
+
+
 let tl = gsap.timeline({
     scrollTrigger: {
     trigger: ".row",
     start: "top top", 
-    endTrigger: ".row",
-    end: "bottom bottom", 
+    //endTrigger: ".section-five",
+    end: scrollPercent+"%", 
     scrub: 1}          
 });
     
@@ -305,67 +373,6 @@ tl.to(cubeFadeIn,{opacity:1,onUpdate: function(){
 .to(spotlight.position,{x:0,z:5,duration:1},"27.5")
 
 
-/* media queries */
-if(window.matchMedia("(max-width: 991.98px)").matches){
-     document.getElementById("canvas").style.top="13vh"; // push canvas down
-}
-if(window.matchMedia("(max-width: 575.98px)").matches){
-    camera.fov = 55; // zoom out for small screens
-    camera.updateProjectionMatrix();
-    document.getElementById("canvas").style.top="15vh";
-
-    //var section1=document.getElementsByClassName()
-
-    ScrollTrigger.create({
-        trigger: ".section-one",
-        start: "70% center",
-        pin: true,
-        endTrigger: ".section-two",
-        end: "bottom bottom",
-        toggleActions: "play none none reverse",
-        animation: gsap.fromTo(".section-one .text-container",{opacity:0,duration:0},{opacity:1,duration:0.5})
-    });
-
-    ScrollTrigger.create({
-        trigger: ".section-two",
-        start: "70% center",
-        pin: true,
-        endTrigger: ".section-three",
-        end: "bottom bottom",
-        toggleActions: "play none none reverse",
-        animation: gsap.fromTo(".section-two .text-container",{opacity:0,duration:0},{opacity:1,duration:0.5})
-    });
-
-    ScrollTrigger.create({
-        trigger: ".section-three",
-        start: "70% center",
-        pin: true,
-        endTrigger: ".section-four",
-        end: "bottom bottom",
-        toggleActions: "play none none reverse",
-        animation:gsap.fromTo(".section-three .text-container",{opacity:0,duration:0},{opacity:1,duration:0.5})
-    });
-
-    ScrollTrigger.create({
-        trigger: ".section-four",
-        start: "70% center",
-        pin: true,
-        endTrigger: ".section-five",
-        end: "bottom bottom",
-        toggleActions: "play none none reverse",
-        animation:gsap.fromTo(".section-four .text-container",{opacity:0,duration:0},{opacity:1,duration:0.5})
-    });
-
-    ScrollTrigger.create({
-        trigger: ".section-five",
-        start: "70% center",
-        pin: true,
-        endTrigger: ".spacer",
-        end: "bottom bottom",
-        toggleActions: "play none none reverse",
-        animation:gsap.fromTo(".section-five .text-container",{opacity:0,duration:0},{opacity:1,duration:0.5})
-    });
-}
 
 
 
