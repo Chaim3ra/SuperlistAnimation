@@ -60,7 +60,7 @@ loader.load( 'models/cube.glb',function getFragments( gltf ) {
     console.error( error );
 } );
 
-/* Initial Cube setup and creation */
+/* Cube setup and creation */
 const cubeGeo = new THREE.BoxGeometry( 0.9615, 0.9615, 0.9615 );
 const cubeMat = new THREE.MeshPhongMaterial({color: '#7a7aa4'});
 const solidCube = new THREE.Mesh( cubeGeo, cubeMat );
@@ -231,9 +231,9 @@ ScrollTrigger.defaults({
     
 let tl = gsap.timeline({
     scrollTrigger: {
-    trigger: ".section-one",
+    trigger: ".row",
     start: "top top", 
-    endTrigger: ".section-five",
+    endTrigger: ".row",
     end: "bottom bottom", 
     scrub: 1}          
 });
@@ -313,6 +313,58 @@ if(window.matchMedia("(max-width: 575.98px)").matches){
     camera.fov = 55; // zoom out for small screens
     camera.updateProjectionMatrix();
     document.getElementById("canvas").style.top="15vh";
+
+    //var section1=document.getElementsByClassName()
+
+    ScrollTrigger.create({
+        trigger: ".section-one",
+        start: "75% center",
+        pin: true,
+        endTrigger: ".section-two",
+        end: "bottom bottom",
+        toggleActions: "play none none reverse",
+        animation: gsap.fromTo(".section-one .text-container",{opacity:0,duration:0},{opacity:1,duration:0.5})
+    });
+
+    ScrollTrigger.create({
+        trigger: ".section-two",
+        start: "75% center",
+        pin: true,
+        endTrigger: ".section-three",
+        end: "bottom bottom",
+        toggleActions: "play none none reverse",
+        animation: gsap.fromTo(".section-two .text-container",{opacity:0,duration:0},{opacity:1,duration:0.5})
+    });
+
+    ScrollTrigger.create({
+        trigger: ".section-three",
+        start: "75% center",
+        pin: true,
+        endTrigger: ".section-four",
+        end: "bottom bottom",
+        toggleActions: "play none none reverse",
+        animation:gsap.fromTo(".section-three .text-container",{opacity:0,duration:0},{opacity:1,duration:0.5})
+    });
+
+    ScrollTrigger.create({
+        trigger: ".section-four",
+        start: "75% center",
+        pin: true,
+        endTrigger: ".section-five",
+        end: "bottom bottom",
+        toggleActions: "play none none reverse",
+        animation:gsap.fromTo(".section-four .text-container",{opacity:0,duration:0},{opacity:1,duration:0.5})
+    });
+
+    ScrollTrigger.create({
+        trigger: ".section-five",
+        start: "75% center",
+        pin: true,
+        endTrigger: ".spacer",
+        end: "bottom bottom",
+        toggleActions: "play none none reverse",
+        animation:gsap.fromTo(".section-five .text-container",{opacity:0,duration:0},{opacity:1,duration:0.5})
+    });
 }
 
 
