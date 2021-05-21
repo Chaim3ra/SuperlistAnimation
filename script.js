@@ -318,7 +318,7 @@ if(window.matchMedia("(max-width: 575.98px)").matches){
 
     ScrollTrigger.create({
         trigger: ".section-one",
-        start: "75% center",
+        start: "70% center",
         pin: true,
         endTrigger: ".section-two",
         end: "bottom bottom",
@@ -328,7 +328,7 @@ if(window.matchMedia("(max-width: 575.98px)").matches){
 
     ScrollTrigger.create({
         trigger: ".section-two",
-        start: "75% center",
+        start: "70% center",
         pin: true,
         endTrigger: ".section-three",
         end: "bottom bottom",
@@ -338,7 +338,7 @@ if(window.matchMedia("(max-width: 575.98px)").matches){
 
     ScrollTrigger.create({
         trigger: ".section-three",
-        start: "75% center",
+        start: "70% center",
         pin: true,
         endTrigger: ".section-four",
         end: "bottom bottom",
@@ -348,7 +348,7 @@ if(window.matchMedia("(max-width: 575.98px)").matches){
 
     ScrollTrigger.create({
         trigger: ".section-four",
-        start: "75% center",
+        start: "70% center",
         pin: true,
         endTrigger: ".section-five",
         end: "bottom bottom",
@@ -358,7 +358,7 @@ if(window.matchMedia("(max-width: 575.98px)").matches){
 
     ScrollTrigger.create({
         trigger: ".section-five",
-        start: "75% center",
+        start: "70% center",
         pin: true,
         endTrigger: ".spacer",
         end: "bottom bottom",
